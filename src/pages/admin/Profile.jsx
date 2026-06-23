@@ -64,14 +64,6 @@ const Profile = () => {
         // 2. Save to LocalStorage
         localStorage.setItem(`avatar_${profile.id}`, base64Data);
 
-        // 3. Try to save to users table (in case the column exists)
-        try {
-          await supabase.from('users').update({ avatar_url: base64Data }).eq('id', profile.id);
-        } catch (dbErr) {
-          // Ignore if the column does not exist
-          console.warn('Could not update avatar_url in public.users table, falling back to auth metadata.', dbErr);
-        }
-
         toast.success('Avatar updated successfully!');
         if (refreshProfile) await refreshProfile();
       } catch (err) {

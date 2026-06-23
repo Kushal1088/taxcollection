@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const { data, error } = await supabase
         .from('users')
-        .select('*')
+        .select('id, full_name, email, mobile_number, role, status, rejection_reason, created_at, updated_at')
         .eq('id', userId)
         .single();
       
@@ -52,6 +52,11 @@ export const AuthProvider = ({ children }) => {
           setUser(session.user);
           const prof = await fetchProfile(session.user.id);
           setProfile(prof);
+          
+          // Clean up bloated database avatar columns to prevent network resets
+          try {
+            await supabase.from('users').update({ avatar_url: null }).eq('id', session.user.id);
+          } catch (e) {}
         }
       } catch (err) {
         console.error('Auth initialization failed:', err);
@@ -69,6 +74,11 @@ export const AuthProvider = ({ children }) => {
         setUser(session.user);
         const prof = await fetchProfile(session.user.id);
         setProfile(prof);
+        
+        // Clean up bloated database avatar columns to prevent network resets
+        try {
+          await supabase.from('users').update({ avatar_url: null }).eq('id', session.user.id);
+        } catch (e) {}
       } else {
         setUser(null);
         setProfile(null);
