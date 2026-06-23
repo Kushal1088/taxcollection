@@ -247,35 +247,15 @@ const CollectorManagement = () => {
       {/* Page Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-foreground">Collector & Ward Setup</h2>
-          <p className="text-sm text-muted-foreground">Manage administrative zones and field officers.</p>
+          <h2 className="text-2xl font-bold tracking-tight text-foreground">
+            {activeTab === 'wards' ? 'Ward Management' : 'Collector Management'}
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            {activeTab === 'wards' 
+              ? 'Manage administrative zones and geographic areas.' 
+              : 'Manage and monitor field collection officers.'}
+          </p>
         </div>
-      </div>
-
-      {/* Tabs Selector */}
-      <div className="flex border-b border-border">
-        <button
-          onClick={() => navigate('/admin/collectors')}
-          className={`flex items-center gap-2 px-6 py-3 border-b-2 font-medium text-sm transition-colors ${
-            activeTab === 'collectors'
-              ? 'border-primary text-primary'
-              : 'border-transparent text-muted-foreground hover:text-foreground'
-          }`}
-        >
-          <Users className="h-4 w-4" />
-          Collector Directory
-        </button>
-        <button
-          onClick={() => navigate('/admin/collectors?tab=wards')}
-          className={`flex items-center gap-2 px-6 py-3 border-b-2 font-medium text-sm transition-colors ${
-            activeTab === 'wards'
-              ? 'border-primary text-primary'
-              : 'border-transparent text-muted-foreground hover:text-foreground'
-          }`}
-        >
-          <Map className="h-4 w-4" />
-          Ward Management
-        </button>
       </div>
 
       {/* Tab: Collectors */}
@@ -295,82 +275,101 @@ const CollectorManagement = () => {
             </button>
           </div>
 
-          {/* Collectors Table */}
-          <div className="overflow-x-auto rounded-lg border border-border bg-card">
-            <table className="w-full text-left border-collapse text-sm">
-              <thead className="bg-muted/40 font-semibold text-muted-foreground border-b border-border">
-                <tr>
-                  <th className="p-4">Name</th>
-                  <th className="p-4">Mobile</th>
-                  <th className="p-4">Assigned Ward</th>
-                  <th className="p-4">Zone / Area</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {collectors.length === 0 ? (
-                  <tr>
-                    <td colSpan="6" className="p-8 text-center text-muted-foreground">
-                      No collectors added yet. Create a collector above.
-                    </td>
-                  </tr>
-                ) : (
-                  collectors.map((col) => (
-                    <tr key={col.id} className="hover:bg-muted/10">
-                      <td className="p-4">
-                        <div className="font-semibold text-foreground">{col.full_name}</div>
-                        <div className="text-xs text-muted-foreground">{col.email}</div>
-                      </td>
-                      <td className="p-4 text-muted-foreground">{col.mobile_number}</td>
-                      <td className="p-4">
-                        <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400">
-                          <MapPin className="h-3 w-3" /> {col.ward_name}
-                        </span>
-                      </td>
-                      <td className="p-4 text-muted-foreground truncate max-w-[150px]">{col.area}</td>
-                      <td className="p-4">
-                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold ${
-                          col.status === 'active' 
-                            ? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400' 
-                            : 'bg-slate-100 dark:bg-slate-800 text-slate-600'
-                        }`}>
-                          {col.status === 'active' ? 'Active' : 'Inactive'}
-                        </span>
-                      </td>
-                      <td className="p-4 text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <button
-                            onClick={() => handleToggleCollectorStatus(col)}
-                            title={col.status === 'active' ? 'Deactivate Account' : 'Activate Account'}
-                            className={`p-1.5 border rounded hover:bg-muted transition-colors ${
-                              col.status === 'active' ? 'text-amber-500 border-amber-200' : 'text-emerald-500 border-emerald-200'
-                            }`}
-                          >
-                            {col.status === 'active' ? <X className="h-4 w-4" /> : <Check className="h-4 w-4" />}
-                          </button>
-                          <button
-                            onClick={() => handleEditCollector(col)}
-                            title="Edit Collector"
-                            className="p-1.5 border border-border rounded hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
-                          >
-                            <Edit2 className="h-4 w-4" />
-                          </button>
-                          <button
-                            onClick={() => handleDeleteCollector(col)}
-                            title="Delete Account"
-                            className="p-1.5 border border-destructive/20 text-destructive rounded hover:bg-destructive/10 transition-colors"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
+          {/* Collectors Grid Cards */}
+          {collectors.length === 0 ? (
+            <div className="bg-card border border-border rounded-xl p-8 text-center text-muted-foreground text-sm">
+              No collectors added yet. Create a collector above.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {collectors.map((col) => {
+                const colAvatar = localStorage.getItem(`avatar_${col.id}`);
+                return (
+                  <div key={col.id} className="bg-card border border-border rounded-xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-col justify-between space-y-4">
+                    {/* Header info */}
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        {colAvatar ? (
+                          <img 
+                            src={colAvatar} 
+                            alt={col.full_name} 
+                            className="h-12 w-12 rounded-full object-cover border border-primary/20"
+                          />
+                        ) : (
+                          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-lg uppercase">
+                            {col.full_name?.charAt(0) || 'C'}
+                          </div>
+                        )}
+                        <div className="min-w-0">
+                          <h4 className="font-bold text-sm text-foreground truncate">{col.full_name}</h4>
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold mt-1 ${
+                            col.status === 'active' 
+                              ? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400' 
+                              : 'bg-slate-100 dark:bg-slate-800 text-slate-600'
+                          }`}>
+                            {col.status === 'active' ? 'Active' : 'Inactive'}
+                          </span>
                         </div>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                      </div>
+                    </div>
+
+                    {/* Details section */}
+                    <div className="space-y-2.5 text-xs border-t border-border pt-3">
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <Mail className="h-3.5 w-3.5 text-primary/70 flex-shrink-0" />
+                        <span className="truncate text-foreground font-medium">{col.email}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <Phone className="h-3.5 w-3.5 text-primary/70 flex-shrink-0" />
+                        <span className="text-foreground font-medium">{col.mobile_number}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <MapPin className="h-3.5 w-3.5 text-primary/70 flex-shrink-0" />
+                        <span className="inline-flex items-center gap-1 font-semibold text-blue-700 dark:text-blue-400">
+                          {col.ward_name}
+                        </span>
+                      </div>
+                      <div className="flex items-start gap-2 text-muted-foreground">
+                        <span className="text-[10px] uppercase tracking-wide font-bold text-primary/70 flex-shrink-0 mt-0.5">Area:</span>
+                        <span className="text-foreground font-medium leading-tight">{col.area}</span>
+                      </div>
+                    </div>
+
+                    {/* Actions row */}
+                    <div className="flex items-center justify-between border-t border-border pt-3 mt-auto">
+                      <span className="text-[10px] text-muted-foreground">Field Officer</span>
+                      
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleToggleCollectorStatus(col)}
+                          title={col.status === 'active' ? 'Deactivate Account' : 'Activate Account'}
+                          className={`p-1.5 border rounded hover:bg-muted transition-colors ${
+                            col.status === 'active' ? 'text-amber-500 border-amber-200' : 'text-emerald-500 border-emerald-200'
+                          }`}
+                        >
+                          {col.status === 'active' ? <X className="h-4 w-4" /> : <Check className="h-4 w-4" />}
+                        </button>
+                        <button
+                          onClick={() => handleEditCollector(col)}
+                          title="Edit Details"
+                          className="p-1.5 border border-border rounded hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          <Edit2 className="h-4 w-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteCollector(col)}
+                          title="Delete Collector"
+                          className="p-1.5 border border-destructive/20 text-destructive rounded hover:bg-destructive/10 transition-colors"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
 

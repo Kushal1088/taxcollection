@@ -36,6 +36,7 @@ import Reports from './pages/admin/Reports';
 import AddProperty from './pages/admin/AddProperty';
 import Settings from './pages/admin/Settings';
 import Profile from './pages/admin/Profile';
+import UserManagement from './pages/admin/UserManagement';
 
 // Helper Root Redirector based on User Role
 const RootRedirector = () => {
@@ -73,101 +74,101 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
-          
+
           {/* Pending Approval tracker for Citizens */}
-          <Route 
-            path="/pending-review" 
+          <Route
+            path="/pending-review"
             element={
               <ProtectedRoute allowedRoles={['citizen']}>
                 <PendingReview />
               </ProtectedRoute>
-            } 
+            }
           />
 
           {/* Collector Protected Panel */}
-          <Route 
-            path="/collector" 
+          <Route
+            path="/collector"
             element={
               <ProtectedRoute allowedRoles={['collector']}>
                 <Layout><CollectorDashboard /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/collector/assigned" 
+          <Route
+            path="/collector/assigned"
             element={
               <ProtectedRoute allowedRoles={['collector']}>
                 <Layout><AssignedProperties /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/collector/survey/:id" 
+          <Route
+            path="/collector/survey/:id"
             element={
               <ProtectedRoute allowedRoles={['collector']}>
                 <Layout><PropertySurvey /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/collector/completed" 
+          <Route
+            path="/collector/completed"
             element={
               <ProtectedRoute allowedRoles={['collector']}>
                 <Layout><CompletedSurveys /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
 
           {/* Citizen Protected Panel */}
-          <Route 
-            path="/citizen" 
+          <Route
+            path="/citizen"
             element={
               <ProtectedRoute allowedRoles={['citizen']}>
                 <Layout><CitizenDashboard /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/citizen/bills" 
+          <Route
+            path="/citizen/bills"
             element={
               <ProtectedRoute allowedRoles={['citizen']}>
                 <Layout><CitizenDashboard /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/citizen/profile" 
+          <Route
+            path="/citizen/profile"
             element={
               <ProtectedRoute allowedRoles={['citizen']}>
                 <Layout><CitizenProfile /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
 
           {/* Admin Protected Panel */}
-          <Route 
-            path="/admin" 
+          <Route
+            path="/admin"
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <Layout><AdminDashboard /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/admin/properties" 
+          <Route
+            path="/admin/properties"
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <Layout><PropertyManagement /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/admin/properties/add" 
+          <Route
+            path="/admin/properties/add"
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <Layout><AddProperty /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
           <Route 
             path="/admin/collectors" 
@@ -178,60 +179,68 @@ function App() {
             } 
           />
           <Route 
-            path="/admin/requests" 
+            path="/admin/users" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Layout><UserManagement /></Layout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route
+            path="/admin/requests"
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <Layout><CitizenRequests /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/admin/verifications" 
+          <Route
+            path="/admin/verifications"
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <Layout><PropertyVerification /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/admin/taxes" 
+          <Route
+            path="/admin/taxes"
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <Layout><TaxManagement /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/admin/notices" 
+          <Route
+            path="/admin/notices"
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <Layout><TaxNotices /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/admin/reports" 
+          <Route
+            path="/admin/reports"
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <Layout><Reports /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/admin/settings" 
+          <Route
+            path="/admin/settings"
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <Layout><Settings /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/admin/profile" 
+          <Route
+            path="/admin/profile"
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <Layout><Profile /></Layout>
               </ProtectedRoute>
-            } 
+            }
           />
 
           {/* Root Redirector */}

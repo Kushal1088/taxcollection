@@ -102,10 +102,18 @@
   * {
     @apply border-border;
   }
+  html,
+  body,
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+  }
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 }
 
@@ -132,3 +140,12 @@
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
+
+/* Typography refinement to prevent text from looking overly bold/heavy */
+.font-extrabold {
+  font-weight: 700 !important;
+}
+.font-bold {
+  font-weight: 600 !important;
+}
+

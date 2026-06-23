@@ -15,22 +15,36 @@ import {
   Bell, 
   Sun, 
   Moon, 
-  User,
+  User, 
+  UserCheck,
   Building2,
   MapPin,
+  Map,
   ClipboardList,
   Plus,
   Settings
 } from 'lucide-react';
 
 const Layout = ({ children }) => {
-  const { profile, logout } = useAuth();
+  const { user, profile, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState('');
+
+  // Sync avatar url
+  useEffect(() => {
+    if (profile) {
+      const localAvatar = localStorage.getItem(`avatar_${profile.id}`);
+      const metadataAvatar = user?.user_metadata?.avatar_url;
+      setAvatarUrl(localAvatar || metadataAvatar || '');
+    } else {
+      setAvatarUrl('');
+    }
+  }, [profile, user]);
 
   // Apply theme
   useEffect(() => {
@@ -80,8 +94,9 @@ const Layout = ({ children }) => {
       case 'admin':
         return [
           { to: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+          { to: '/admin/users', label: 'User Management', icon: Users },
           { to: '/admin/requests', label: 'Citizen Requests', icon: FileText },
-          { to: '/admin/collectors', label: 'Collector Management', icon: Users },
+          { to: '/admin/collectors', label: 'Collector Management', icon: UserCheck },
           { to: '/admin/collectors?tab=wards', label: 'Ward Management', icon: Map },
           { to: '/admin/verifications', label: 'Property Verification', icon: CheckSquare },
           { to: '/admin/properties', label: 'Property Management', icon: Building2 },
@@ -89,6 +104,7 @@ const Layout = ({ children }) => {
           { to: '/admin/notices', label: 'Tax Notices', icon: Bell },
           { to: '/admin/reports', label: 'Reports', icon: BarChart3 },
           { to: '/admin/settings', label: 'Settings', icon: Settings },
+          { to: '/admin/profile', label: 'Profile', icon: User },
         ];
       case 'collector':
         return [
@@ -143,17 +159,28 @@ const Layout = ({ children }) => {
         </div>
 
         {/* Sidebar User Profile Info */}
-        <div className="p-6 border-b border-border bg-muted/30">
+        <Link 
+          to={profile?.role === 'admin' ? '/admin/profile' : profile?.role === 'citizen' ? '/citizen/profile' : '#'}
+          className="p-6 border-b border-border bg-muted/30 hover:bg-muted/50 block transition-all"
+        >
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-lg uppercase">
-              {profile?.full_name?.charAt(0) || 'U'}
-            </div>
+            {avatarUrl ? (
+              <img 
+                src={avatarUrl} 
+                alt="Avatar" 
+                className="h-10 w-10 rounded-full object-cover border border-primary/20"
+              />
+            ) : (
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-lg uppercase">
+                {profile?.full_name?.charAt(0) || 'U'}
+              </div>
+            )}
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-foreground">{profile?.full_name}</p>
               <p className="truncate text-xs text-muted-foreground capitalize font-medium">{profile?.role}</p>
             </div>
           </div>
-        </div>
+        </Link>
 
         {/* Sidebar Navigation Items */}
         <nav className="flex-1 space-y-1 px-4 py-6 overflow-y-auto">
@@ -277,17 +304,33 @@ const Layout = ({ children }) => {
             </div>
 
             {/* Quick User Avatar Badge */}
-            <div className="hidden items-center gap-2 sm:flex pl-2 border-l border-border">
-              <span className="text-xs font-semibold px-2 py-1 rounded bg-secondary text-secondary-foreground uppercase tracking-wide">
-                {profile?.role}
-              </span>
-            </div>
+            <Link 
+              to={profile?.role === 'admin' ? '/admin/profile' : profile?.role === 'citizen' ? '/citizen/profile' : '#'}
+              className="hidden items-center gap-2 sm:flex pl-2 border-l border-border hover:opacity-80 transition-opacity"
+            >
+              {avatarUrl ? (
+                <div className="flex items-center gap-2">
+                  <img 
+                    src={avatarUrl} 
+                    alt="Avatar" 
+                    className="h-8 w-8 rounded-full object-cover border border-primary/20"
+                  />
+                  <span className="text-xs font-semibold px-2 py-1 rounded bg-secondary text-secondary-foreground uppercase tracking-wide cursor-pointer">
+                    {profile?.role}
+                  </span>
+                </div>
+              ) : (
+                <span className="text-xs font-semibold px-2 py-1 rounded bg-secondary text-secondary-foreground uppercase tracking-wide cursor-pointer">
+                  {profile?.role}
+                </span>
+              )}
+            </Link>
           </div>
         </header>
 
         {/* Content Router Workspace */}
         <main className="flex-1 overflow-y-auto p-6 md:p-8">
-          <div className="mx-auto max-w-7xl">
+          <div className="w-full">
             {children}
           </div>
         </main>
