@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { supabase, signUpWithoutSessionSwitch } from '../../lib/supabase';
 import { toast } from '../../components/ui/Toast';
 import Modal from '../../components/ui/Modal';
@@ -20,7 +21,20 @@ import {
 
 
 const CollectorManagement = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('collectors');
+  
+  // Sync tab with URL search parameter
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tabParam = params.get('tab');
+    if (tabParam === 'wards') {
+      setActiveTab('wards');
+    } else {
+      setActiveTab('collectors');
+    }
+  }, [location.search]);
   
   // States for Wards
   const [wards, setWards] = useState([]);
@@ -241,7 +255,7 @@ const CollectorManagement = () => {
       {/* Tabs Selector */}
       <div className="flex border-b border-border">
         <button
-          onClick={() => setActiveTab('collectors')}
+          onClick={() => navigate('/admin/collectors')}
           className={`flex items-center gap-2 px-6 py-3 border-b-2 font-medium text-sm transition-colors ${
             activeTab === 'collectors'
               ? 'border-primary text-primary'
@@ -252,7 +266,7 @@ const CollectorManagement = () => {
           Collector Directory
         </button>
         <button
-          onClick={() => setActiveTab('wards')}
+          onClick={() => navigate('/admin/collectors?tab=wards')}
           className={`flex items-center gap-2 px-6 py-3 border-b-2 font-medium text-sm transition-colors ${
             activeTab === 'wards'
               ? 'border-primary text-primary'

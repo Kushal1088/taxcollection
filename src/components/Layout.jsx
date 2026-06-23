@@ -82,6 +82,7 @@ const Layout = ({ children }) => {
           { to: '/admin', label: 'Dashboard', icon: LayoutDashboard },
           { to: '/admin/requests', label: 'Citizen Requests', icon: FileText },
           { to: '/admin/collectors', label: 'Collector Management', icon: Users },
+          { to: '/admin/collectors?tab=wards', label: 'Ward Management', icon: Map },
           { to: '/admin/verifications', label: 'Property Verification', icon: CheckSquare },
           { to: '/admin/properties', label: 'Property Management', icon: Building2 },
           { to: '/admin/taxes', label: 'Tax Management', icon: DollarSign },
@@ -158,7 +159,9 @@ const Layout = ({ children }) => {
         <nav className="flex-1 space-y-1 px-4 py-6 overflow-y-auto">
           {menuLinks.map((link) => {
             const Icon = link.icon;
-            const isActive = location.pathname === link.to;
+            const isActive = link.to.includes('?')
+              ? (location.pathname + location.search) === link.to
+              : location.pathname === link.to && !location.search.includes('tab=wards');
             return (
               <Link
                 key={link.to}
