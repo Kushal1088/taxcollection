@@ -293,7 +293,7 @@ const Landing = () => {
             © 2026 Tax Collection & Assessment Management System. All rights reserved.
           </p>
           <p className="text-[10px] text-muted-foreground">
-            Designed & Developed by <span className="font-semibold text-foreground">Kushal Pandey</span>
+            Designed & Developed by <span className="font-semibold text-foreground">NKtech IT Solution</span>
           </p>
         </div>
       </footer>

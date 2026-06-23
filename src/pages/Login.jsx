@@ -132,7 +132,7 @@ const Login = () => {
 
         <div className="text-center text-xs text-muted-foreground/60 pt-4 border-t border-border/40">
           <p>© 2026 Tax Collection System</p>
-          <p className="mt-0.5">Designed & Developed by <span className="font-semibold text-foreground/75">Kushal Pandey</span></p>
+          <p className="mt-0.5">Designed & Developed by <span className="font-semibold text-foreground/75">NKtech IT Solution</span></p>
         </div>
 
       </div>

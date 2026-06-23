@@ -99,7 +99,7 @@ const Register = () => {
                   value={formData.fullName}
                   onChange={handleChange}
                   className="block w-full rounded-lg border border-input bg-background py-2 pl-9 pr-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                  placeholder="e.g. Kushal Pandey"
+                  placeholder="e.g. NKtech IT Solution"
                 />
               </div>
             </div>

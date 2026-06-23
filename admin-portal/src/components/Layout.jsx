@@ -193,7 +193,7 @@ const Layout = ({ children }) => {
             Sign Out
           </button>
           <div className="text-center text-[10px] text-muted-foreground border-t border-border/50 pt-2">
-            <p className="font-semibold text-foreground/75">© 2026 Kushal Pandey</p>
+            <p className="font-semibold text-foreground/75">© 2026 NKtech IT Solution</p>
             <p className="mt-0.5 opacity-80">Tax Collection Management</p>
           </div>
         </div>

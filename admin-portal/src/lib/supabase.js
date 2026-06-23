@@ -92,7 +92,7 @@ const SEED_DATA = {
     },
     {
       id: 'usr_citizen_5',
-      full_name: 'Kushal Pandey (Step 5 - Unpaid Dues)',
+      full_name: 'NKtech IT Solution (Step 5 - Unpaid Dues)',
       email: 'kushal@gmail.com',
       password: 'password',
       mobile_number: '9876543213',
@@ -184,7 +184,7 @@ const SEED_DATA = {
     {
       id: 'req_5',
       citizen_id: 'usr_citizen_5',
-      full_name: 'Kushal Pandey (Step 5 - Unpaid Dues)',
+      full_name: 'NKtech IT Solution (Step 5 - Unpaid Dues)',
       mobile_number: '9876543213',
       email: 'kushal@gmail.com',
       address: 'Sector 5 Outer Ring Road',
@@ -283,7 +283,7 @@ const SEED_DATA = {
       ward_id: 'ward_1',
       ulb: 'Municipal Corporation Zone A',
       property_number: 'PROP-2026-00002',
-      owner_name: 'Kushal Pandey',
+      owner_name: 'NKtech IT Solution',
       owner_phone: '9876543213',
       owner_photo_url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400',
       aadhaar_url: 'https://images.unsplash.com/photo-1554774853-aae0a22c8aa4?auto=format&fit=crop&q=80&w=400',
