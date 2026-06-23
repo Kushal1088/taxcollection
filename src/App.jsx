@@ -24,6 +24,19 @@ import CompletedSurveys from './pages/collector/CompletedSurveys';
 import CitizenDashboard from './pages/citizen/Dashboard';
 import CitizenProfile from './pages/citizen/Profile';
 
+// Admin Pages
+import AdminDashboard from './pages/admin/Dashboard';
+import CollectorManagement from './pages/admin/CollectorManagement';
+import CitizenRequests from './pages/admin/CitizenRequests';
+import PropertyVerification from './pages/admin/PropertyVerification';
+import PropertyManagement from './pages/admin/PropertyManagement';
+import TaxManagement from './pages/admin/TaxManagement';
+import TaxNotices from './pages/admin/TaxNotices';
+import Reports from './pages/admin/Reports';
+import AddProperty from './pages/admin/AddProperty';
+import Settings from './pages/admin/Settings';
+import Profile from './pages/admin/Profile';
+
 // Helper Root Redirector based on User Role
 const RootRedirector = () => {
   const { user, profile, loading } = useAuth();
@@ -45,15 +58,7 @@ const RootRedirector = () => {
   }
 
   // Active user redirect
-  if (profile.role === 'admin') {
-    const adminPortalUrl = import.meta.env.VITE_ADMIN_PORTAL_URL || 'http://localhost:5174/';
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      const accessToken = session?.access_token || '';
-      const refreshToken = session?.refresh_token || '';
-      window.location.href = `${adminPortalUrl}#access_token=${accessToken}&refresh_token=${refreshToken}`;
-    });
-    return null;
-  }
+  if (profile.role === 'admin') return <Navigate to="/admin" replace />;
   if (profile.role === 'collector') return <Navigate to="/collector" replace />;
   return <Navigate to="/citizen" replace />;
 };
@@ -135,6 +140,96 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['citizen']}>
                 <Layout><CitizenProfile /></Layout>
+              </ProtectedRoute>
+            } 
+          />
+
+          {/* Admin Protected Panel */}
+          <Route 
+            path="/admin" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Layout><AdminDashboard /></Layout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/properties" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Layout><PropertyManagement /></Layout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/properties/add" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Layout><AddProperty /></Layout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/collectors" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Layout><CollectorManagement /></Layout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/requests" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Layout><CitizenRequests /></Layout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/verifications" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Layout><PropertyVerification /></Layout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/taxes" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Layout><TaxManagement /></Layout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/notices" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Layout><TaxNotices /></Layout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/reports" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Layout><Reports /></Layout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/settings" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Layout><Settings /></Layout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/profile" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Layout><Profile /></Layout>
               </ProtectedRoute>
             } 
           />

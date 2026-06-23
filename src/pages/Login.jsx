@@ -32,17 +32,7 @@ const Login = () => {
       const role = data.profile?.role || (data.user.role !== 'authenticated' ? data.user.role : null) || (email.includes('admin') ? 'admin' : email.includes('collector') ? 'collector' : 'citizen');
       
       if (role === 'admin') {
-        const queryParams = new URLSearchParams(window.location.search);
-        const redirectTo = queryParams.get('redirect_to');
-        
-        const defaultAdminUrl = import.meta.env.VITE_ADMIN_PORTAL_URL || 'http://localhost:5174/';
-        const targetUrl = redirectTo || defaultAdminUrl;
-        
-        // Pass session tokens via hash fragments for cross-domain auto login
-        const accessToken = data.session?.access_token || '';
-        const refreshToken = data.session?.refresh_token || '';
-        
-        window.location.href = `${targetUrl}#access_token=${accessToken}&refresh_token=${refreshToken}`;
+        navigate('/admin');
       } else if (role === 'collector') {
         navigate('/collector');
       } else {
