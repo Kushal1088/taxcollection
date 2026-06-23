@@ -273,13 +273,13 @@ const UserManagement = () => {
       </div>
 
       {/* Stats Summary Cards */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-card border border-border rounded-xl p-4 shadow-sm flex items-center justify-between">
           <div>
             <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Total Users</span>
             <h3 className="text-xl font-bold text-foreground mt-0.5">{stats.total}</h3>
           </div>
-          <div className="p-2.5 rounded-lg bg-blue-500/10 text-primary">
+          <div className="p-2.5 rounded-lg bg-primary/10 text-primary">
             <Users className="h-5 w-5" />
           </div>
         </div>
@@ -289,7 +289,7 @@ const UserManagement = () => {
             <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Administrators</span>
             <h3 className="text-xl font-bold text-foreground mt-0.5">{stats.admins}</h3>
           </div>
-          <div className="p-2.5 rounded-lg bg-indigo-500/10 text-indigo-500">
+          <div className="p-2.5 rounded-lg bg-primary/10 text-primary">
             <Shield className="h-5 w-5" />
           </div>
         </div>
@@ -299,7 +299,7 @@ const UserManagement = () => {
             <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Field Collectors</span>
             <h3 className="text-xl font-bold text-foreground mt-0.5">{stats.collectors}</h3>
           </div>
-          <div className="p-2.5 rounded-lg bg-emerald-500/10 text-emerald-500">
+          <div className="p-2.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
             <UserCheck className="h-5 w-5" />
           </div>
         </div>
@@ -309,7 +309,7 @@ const UserManagement = () => {
             <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Registered Citizens</span>
             <h3 className="text-xl font-bold text-foreground mt-0.5">{stats.citizens}</h3>
           </div>
-          <div className="p-2.5 rounded-lg bg-purple-500/10 text-purple-500">
+          <div className="p-2.5 rounded-lg bg-muted text-muted-foreground">
             <User className="h-5 w-5" />
           </div>
         </div>
@@ -376,7 +376,7 @@ const UserManagement = () => {
                 onClick={() => setSelectedStatus(status.id)}
                 className={`px-3 py-1.5 text-[10px] font-semibold rounded-full border transition-all ${
                   selectedStatus === status.id 
-                    ? 'bg-indigo-600 text-white border-indigo-600' 
+                    ? 'bg-primary text-primary-foreground border-primary' 
                     : 'bg-background hover:bg-muted text-muted-foreground border-input'
                 }`}
               >
@@ -435,10 +435,10 @@ const UserManagement = () => {
                     <td className="p-4">
                       <span className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase px-2 py-0.5 rounded ${
                         usr.role === 'admin' 
-                          ? 'bg-indigo-50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-400' 
+                          ? 'bg-primary/10 text-primary' 
                           : usr.role === 'collector' 
-                            ? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400' 
-                            : 'bg-purple-50 dark:bg-purple-950/30 text-purple-700 dark:text-purple-400'
+                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' 
+                            : 'bg-muted text-muted-foreground'
                       }`}>
                         {usr.role === 'admin' && <Shield className="h-2.5 w-2.5" />}
                         {usr.role === 'collector' && <UserCheck className="h-2.5 w-2.5" />}

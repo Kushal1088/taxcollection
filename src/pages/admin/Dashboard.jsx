@@ -210,10 +210,10 @@ const Dashboard = () => {
   };
 
   const CARD_THEMES = [
-    { title: 'Total Revenue', value: `₹${stats.totalCollected.toLocaleString()}`, desc: 'Total tax collections verified', icon: DollarSign, color: 'from-blue-600 to-indigo-600 bg-blue-500/10 text-primary' },
-    { title: 'Outstanding Dues', value: `₹${stats.totalPending.toLocaleString()}`, desc: 'Taxes currently pending / unpaid', icon: AlertTriangle, color: 'from-amber-600 to-orange-600 bg-amber-500/10 text-amber-500' },
-    { title: 'Active Properties', value: stats.activePropertiesCount, desc: 'Registered & active properties', icon: Building2, color: 'from-emerald-600 to-teal-600 bg-emerald-500/10 text-emerald-500' },
-    { title: 'Field Surveys Pending', value: stats.pendingSurveysCount, desc: 'Properties awaiting inspection', icon: ClipboardList, color: 'from-pink-600 to-rose-600 bg-pink-500/10 text-pink-500' }
+    { title: 'Total Revenue', value: `₹${stats.totalCollected.toLocaleString()}`, desc: 'Total tax collections verified', icon: DollarSign, bgClass: 'bg-primary/10', textClass: 'text-primary' },
+    { title: 'Outstanding Dues', value: `₹${stats.totalPending.toLocaleString()}`, desc: 'Taxes currently pending / unpaid', icon: AlertTriangle, bgClass: 'bg-amber-500/10', textClass: 'text-amber-600 dark:text-amber-400' },
+    { title: 'Active Properties', value: stats.activePropertiesCount, desc: 'Registered & active properties', icon: Building2, bgClass: 'bg-emerald-500/10', textClass: 'text-emerald-600 dark:text-emerald-400' },
+    { title: 'Field Surveys Pending', value: stats.pendingSurveysCount, desc: 'Properties awaiting inspection', icon: ClipboardList, bgClass: 'bg-rose-500/10', textClass: 'text-rose-600 dark:text-rose-400' }
   ];
 
   return (
@@ -244,7 +244,7 @@ const Dashboard = () => {
                     <h3 className="text-2xl font-bold tracking-tight text-foreground">{c.value}</h3>
                     <p className="text-[10px] text-muted-foreground">{c.desc}</p>
                   </div>
-                  <div className={`p-3 rounded-xl ${c.color.split(' ')[2]}`}>
+                  <div className={`p-3 rounded-xl ${c.bgClass} ${c.textClass}`}>
                     <Icon className="h-6 w-6" />
                   </div>
                 </div>
@@ -269,7 +269,7 @@ const Dashboard = () => {
                     <XAxis dataKey="month" stroke="#94A3B8" fontSize={10} tickLine={false} />
                     <YAxis stroke="#94A3B8" fontSize={10} tickLine={false} />
                     <Tooltip formatter={(value) => [`₹${value}`, 'Amount']} />
-                    <Line type="monotone" dataKey="amount" stroke="#3b82f6" strokeWidth={3} dot={{ fill: '#3b82f6', r: 4 }} activeDot={{ r: 6 }} />
+                    <Line type="monotone" dataKey="amount" stroke="hsl(var(--primary))" strokeWidth={2.5} dot={{ fill: 'hsl(var(--primary))', r: 4 }} activeDot={{ r: 6 }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -290,9 +290,9 @@ const Dashboard = () => {
                     <XAxis dataKey="name" stroke="#94A3B8" fontSize={10} tickLine={false} />
                     <YAxis stroke="#94A3B8" fontSize={10} tickLine={false} />
                     <Tooltip formatter={(value) => [`₹${value}`, 'Collected']} />
-                    <Bar dataKey="revenue" fill="#4f46e5" radius={[4, 4, 0, 0]}>
+                    <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]}>
                       {wardData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={index % 2 === 0 ? '#4f46e5' : '#6366f1'} />
+                        <Cell key={`cell-${index}`} fill="hsl(var(--primary))" opacity={index % 2 === 0 ? 0.95 : 0.8} />
                       ))}
                     </Bar>
                   </BarChart>

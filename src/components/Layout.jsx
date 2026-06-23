@@ -137,7 +137,7 @@ const Layout = ({ children }) => {
         <div className="flex h-16 items-center justify-between px-6 border-b border-border bg-primary/5">
           <div className="flex items-center gap-2">
             <Building2 className="h-6 w-6 text-primary" />
-            <span className="text-lg font-bold tracking-tight bg-gradient-to-r from-primary to-indigo-600 bg-clip-text text-transparent">
+            <span className="text-lg font-bold tracking-tight text-foreground font-sans">
               Municipal Corporation
             </span>
           </div>
@@ -177,7 +177,7 @@ const Layout = ({ children }) => {
                 className={`
                   flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200
                   ${isActive 
-                    ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-[1.02]' 
+                    ? 'bg-primary text-primary-foreground shadow-sm font-semibold' 
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground hover:translate-x-1'
                   }
                 `}
@@ -296,7 +296,7 @@ const Layout = ({ children }) => {
         </header>
 
         {/* Content Router Workspace */}
-        <main className="flex-1 overflow-y-auto p-6 md:p-8">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">
           <div className="w-full">
             {children}
           </div>

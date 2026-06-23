@@ -227,7 +227,7 @@ const PropertyVerification = () => {
                       </button>
                       <button
                         onClick={() => handleOpenActionModal(prop, 'approve', 'survey')}
-                        className="flex items-center gap-1 text-xs font-semibold px-3 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition-all shadow-md shadow-emerald-500/10"
+                        className="flex items-center gap-1 text-xs font-semibold px-3 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition-all shadow-sm"
                       >
                         <Check className="h-4 w-4" /> Approve
                       </button>
