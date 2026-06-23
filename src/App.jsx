@@ -4,8 +4,10 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import { ToastContainer } from './components/ui/Toast';
+import { supabase } from './lib/supabase';
 
 // Auth Pages
+import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -44,8 +46,12 @@ const RootRedirector = () => {
 
   // Active user redirect
   if (profile.role === 'admin') {
-    // Redirect admin to the Admin Portal on port 5174
-    window.location.href = 'http://localhost:5174/';
+    const adminPortalUrl = import.meta.env.VITE_ADMIN_PORTAL_URL || 'http://localhost:5174/';
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      const accessToken = session?.access_token || '';
+      const refreshToken = session?.refresh_token || '';
+      window.location.href = `${adminPortalUrl}#access_token=${accessToken}&refresh_token=${refreshToken}`;
+    });
     return null;
   }
   if (profile.role === 'collector') return <Navigate to="/collector" replace />;
@@ -134,7 +140,7 @@ function App() {
           />
 
           {/* Root Redirector */}
-          <Route path="/" element={<RootRedirector />} />
+          <Route path="/" element={<Landing />} />
           <Route path="*" element={<RootRedirector />} />
         </Routes>
       </BrowserRouter>

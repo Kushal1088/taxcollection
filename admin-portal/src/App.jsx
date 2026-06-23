@@ -23,6 +23,14 @@ import AddProperty from './pages/admin/AddProperty';
 import Settings from './pages/admin/Settings';
 import Profile from './pages/admin/Profile';
 
+// Redirect admin login requests to the main portal login page
+const AdminLoginRedirector = () => {
+  const mainPortalUrl = import.meta.env.VITE_MAIN_PORTAL_URL || 'http://localhost:5173';
+  const currentOrigin = window.location.origin;
+  window.location.href = `${mainPortalUrl}/login?redirect_to=${encodeURIComponent(currentOrigin)}`;
+  return null;
+};
+
 // Helper Root Redirector based on User Role
 const RootRedirector = () => {
   const { user, profile, loading } = useAuth();
@@ -36,7 +44,10 @@ const RootRedirector = () => {
   }
 
   if (!user || !profile) {
-    return <Navigate to="/login" replace />;
+    const mainPortalUrl = import.meta.env.VITE_MAIN_PORTAL_URL || 'http://localhost:5173';
+    const currentOrigin = window.location.origin;
+    window.location.href = `${mainPortalUrl}/login?redirect_to=${encodeURIComponent(currentOrigin)}`;
+    return null;
   }
 
   // Active admin user redirect
@@ -54,7 +65,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Public Authentication Routes */}
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<AdminLoginRedirector />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           

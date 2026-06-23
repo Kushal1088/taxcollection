@@ -47,6 +47,26 @@ export const AuthProvider = ({ children }) => {
     // Initial session retrieval
     const initializeAuth = async () => {
       try {
+        // Parse hash params if redirected from main portal
+        const hash = window.location.hash;
+        if (hash) {
+          const params = new URLSearchParams(hash.substring(1)); // remove '#'
+          const accessToken = params.get('access_token');
+          const refreshToken = params.get('refresh_token');
+          
+          if (accessToken && refreshToken) {
+            const { data, error } = await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken
+            });
+            
+            if (!error && data?.session) {
+              // Clear hash from URL
+              window.history.replaceState(null, null, window.location.pathname);
+            }
+          }
+        }
+
         const { data: { session } } = await supabase.auth.getSession();
         if (session?.user) {
           setUser(session.user);
