@@ -283,23 +283,14 @@ const CollectorManagement = () => {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {collectors.map((col) => {
-                const colAvatar = localStorage.getItem(`avatar_${col.id}`);
                 return (
                   <div key={col.id} className="bg-card border border-border rounded-xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-col justify-between space-y-4">
                     {/* Header info */}
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
-                        {colAvatar ? (
-                          <img 
-                            src={colAvatar} 
-                            alt={col.full_name} 
-                            className="h-12 w-12 rounded-full object-cover border border-primary/20"
-                          />
-                        ) : (
-                          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-lg uppercase">
-                            {col.full_name?.charAt(0) || 'C'}
-                          </div>
-                        )}
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-lg uppercase">
+                          {col.full_name?.charAt(0) || 'C'}
+                        </div>
                         <div className="min-w-0">
                           <h4 className="font-bold text-sm text-foreground truncate">{col.full_name}</h4>
                           <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold mt-1 ${

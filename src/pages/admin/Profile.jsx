@@ -12,16 +12,14 @@ import {
   Save, 
   BadgeCheck,
   KeyRound,
-  FileCheck,
-  Camera
+  FileCheck
 } from 'lucide-react';
 
 const Profile = () => {
-  const { user, profile, refreshProfile } = useAuth();
+  const { profile, refreshProfile } = useAuth();
   const [loading, setLoading] = useState(false);
   const [fullName, setFullName] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
-  const [avatarUrl, setAvatarUrl] = useState('');
   
   // Password change states
   const [currentPassword, setCurrentPassword] = useState('');
@@ -33,45 +31,8 @@ const Profile = () => {
     if (profile) {
       setFullName(profile.full_name || '');
       setMobileNumber(profile.mobile_number || '');
-      
-      const localAvatar = localStorage.getItem(`avatar_${profile.id}`);
-      const metadataAvatar = user?.user_metadata?.avatar_url;
-      setAvatarUrl(localAvatar || metadataAvatar || '');
     }
-  }, [profile, user]);
-
-  const handleAvatarChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    if (file.size > 2 * 1024 * 1024) {
-      toast.error('Image size must be less than 2MB.');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = async () => {
-      const base64Data = reader.result;
-      setAvatarUrl(base64Data);
-
-      try {
-        // 1. Save to Auth Metadata
-        const { error: authError } = await supabase.auth.updateUser({
-          data: { avatar_url: base64Data }
-        });
-        if (authError) throw authError;
-
-        // 2. Save to LocalStorage
-        localStorage.setItem(`avatar_${profile.id}`, base64Data);
-
-        toast.success('Avatar updated successfully!');
-        if (refreshProfile) await refreshProfile();
-      } catch (err) {
-        toast.error(err.message || 'Failed to update avatar.');
-      }
-    };
-    reader.readAsDataURL(file);
-  };
+  }, [profile]);
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
@@ -163,37 +124,13 @@ const Profile = () => {
         {/* Profile Card View */}
         <div className="md:col-span-1 space-y-6">
           <div className="bg-card border border-border rounded-xl p-6 shadow-sm flex flex-col items-center text-center">
-            <div className="relative group cursor-pointer">
-              {avatarUrl ? (
-                <img 
-                  src={avatarUrl} 
-                  alt="Admin Avatar" 
-                  className="h-24 w-24 rounded-full object-cover border-2 border-primary/20"
-                />
-              ) : (
-                <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-3xl uppercase border-2 border-primary/20">
-                  {profile.full_name?.charAt(0) || 'A'}
-                </div>
-              )}
+            <div className="relative">
+              <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-3xl uppercase border-2 border-primary/20">
+                {profile.full_name?.charAt(0) || 'A'}
+              </div>
               <div className="absolute bottom-0 right-0 p-1 bg-green-500 rounded-full border-2 border-card" title="Active Account">
                 <BadgeCheck className="h-4.5 w-4.5 text-white" />
               </div>
-              
-              {/* Image Upload Hover Overlay */}
-              <label 
-                htmlFor="avatar-upload" 
-                className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer"
-              >
-                <Camera className="h-5 w-5 mb-0.5" />
-                <span className="text-[10px] font-semibold">Change Photo</span>
-              </label>
-              <input 
-                id="avatar-upload"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleAvatarChange}
-              />
             </div>
             
             <h3 className="mt-4 font-bold text-lg text-foreground truncate max-w-full">

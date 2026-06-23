@@ -56,6 +56,9 @@ export const AuthProvider = ({ children }) => {
           // Clean up bloated database avatar columns to prevent network resets
           try {
             await supabase.from('users').update({ avatar_url: null }).eq('id', session.user.id);
+            if (session.user.user_metadata?.avatar_url) {
+              await supabase.auth.updateUser({ data: { avatar_url: null } });
+            }
           } catch (e) {}
         }
       } catch (err) {
@@ -78,6 +81,9 @@ export const AuthProvider = ({ children }) => {
         // Clean up bloated database avatar columns to prevent network resets
         try {
           await supabase.from('users').update({ avatar_url: null }).eq('id', session.user.id);
+          if (session.user.user_metadata?.avatar_url) {
+            await supabase.auth.updateUser({ data: { avatar_url: null } });
+          }
         } catch (e) {}
       } else {
         setUser(null);

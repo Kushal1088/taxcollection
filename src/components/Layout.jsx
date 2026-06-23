@@ -26,25 +26,13 @@ import {
 } from 'lucide-react';
 
 const Layout = ({ children }) => {
-  const { user, profile, logout } = useAuth();
+  const { profile, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState('');
-
-  // Sync avatar url
-  useEffect(() => {
-    if (profile) {
-      const localAvatar = localStorage.getItem(`avatar_${profile.id}`);
-      const metadataAvatar = user?.user_metadata?.avatar_url;
-      setAvatarUrl(localAvatar || metadataAvatar || '');
-    } else {
-      setAvatarUrl('');
-    }
-  }, [profile, user]);
 
   // Apply theme
   useEffect(() => {
@@ -164,17 +152,9 @@ const Layout = ({ children }) => {
           className="p-6 border-b border-border bg-muted/30 hover:bg-muted/50 block transition-all"
         >
           <div className="flex items-center gap-3">
-            {avatarUrl ? (
-              <img 
-                src={avatarUrl} 
-                alt="Avatar" 
-                className="h-10 w-10 rounded-full object-cover border border-primary/20"
-              />
-            ) : (
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-lg uppercase">
-                {profile?.full_name?.charAt(0) || 'U'}
-              </div>
-            )}
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-lg uppercase">
+              {profile?.full_name?.charAt(0) || 'U'}
+            </div>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-foreground">{profile?.full_name}</p>
               <p className="truncate text-xs text-muted-foreground capitalize font-medium">{profile?.role}</p>
@@ -308,22 +288,9 @@ const Layout = ({ children }) => {
               to={profile?.role === 'admin' ? '/admin/profile' : profile?.role === 'citizen' ? '/citizen/profile' : '#'}
               className="hidden items-center gap-2 sm:flex pl-2 border-l border-border hover:opacity-80 transition-opacity"
             >
-              {avatarUrl ? (
-                <div className="flex items-center gap-2">
-                  <img 
-                    src={avatarUrl} 
-                    alt="Avatar" 
-                    className="h-8 w-8 rounded-full object-cover border border-primary/20"
-                  />
-                  <span className="text-xs font-semibold px-2 py-1 rounded bg-secondary text-secondary-foreground uppercase tracking-wide cursor-pointer">
-                    {profile?.role}
-                  </span>
-                </div>
-              ) : (
-                <span className="text-xs font-semibold px-2 py-1 rounded bg-secondary text-secondary-foreground uppercase tracking-wide cursor-pointer">
-                  {profile?.role}
-                </span>
-              )}
+              <span className="text-xs font-semibold px-2 py-1 rounded bg-secondary text-secondary-foreground uppercase tracking-wide cursor-pointer">
+                {profile?.role}
+              </span>
             </Link>
           </div>
         </header>
